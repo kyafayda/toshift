@@ -1,5 +1,5 @@
 #!venv/bin/python
 
 from app import app
-app.run(port=33201)
+app.run(port=31201)
 
