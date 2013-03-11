@@ -1,0 +1,23 @@
+<!-- extend base layout -->
+{% extends "layout.html" %}
+
+{% block content %}
+<table>
+    <tr valign = "top">
+        <td><img src="{{owner.avatar(128)}}"></td>
+        <td><h1>Owner: {{owner.nickname}}!</h1></td>
+    </tr>
+</table>
+<hr>
+{% for expense in expenses %}
+    {% include 'expense.html' %}
+    <!--<table>
+    <tr valign = "top">
+        <td><img src="{{expense.owner.avatar(50)}}"></td>
+        <td><i>{{expense.owner.nickname}} here are your expense descriptions:
+        </i><br>{{expense.description}}</td>
+    </tr>
+</table>-->
+{% endfor %}
+{% endblock %}
+

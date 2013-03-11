@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Hi, {{owner.nickname}}!</h1>
+{% for expense in expenses %}
+<div><p>{{expense.owner.nickname}} your expense amount: {{expense.amount}}
+</b></p></div>
+{% endfor %}
+{% endblock %}
