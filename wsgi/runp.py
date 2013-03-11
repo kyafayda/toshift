@@ -1,5 +1,5 @@
 #!venv/bin/python
 
 from app import app
-app.run(host = '$OPENSHIFT_INTERNAL_IP', port=8080)
+app.run(host = '127.5.253.1', port=8080)
 
