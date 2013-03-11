@@ -26,10 +26,10 @@
               <li class="active">
                 <a href ="{{ url_for('home') }}">Home</a>
               </li>
-              {% if g.owner.is_authenticated() %}  
+              {% if g.user.is_authenticated() %}  
               <li>
-              <a href="{{ url_for('owner', nickname = g.owner.nickname) }}
-                ">Profile</a>
+              <a href="{{ url_for('user', nickname = g.user.nickname) }}
+                ">My Expenses</a>
               </li>
               <li>
                 <a href ="{{ url_for('logout') }}">Logout</a>
@@ -39,8 +39,6 @@
                 <a href ="{{ url_for('login') }}">Login</a>
               </li>
                 {% endif %}
-              <li><a>Test</a>
-              </li>
             </ul>
           </div>
         </div>
@@ -60,7 +58,7 @@
       <div class="span12">
         {% block content %}
         {% endblock %}
-      </div>
+      </div>    
   </div>
     <script src="/static/js/jquery.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>

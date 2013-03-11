@@ -1,11 +1,19 @@
-<table>
+<table class="table table-striped">
   <tr valign="top">
-    <td><img src="{{expense.owner.avatar(50)}}"></td>
-    <i><td>{{expense.type}}</td>
-        <td>{{expense.amount}}</td>
-        <td>{{expense.description}}</td>
-        <td>{{expense.mode}}</td>
-        <td>{{expense.date}}</td></i>
+  	<td>#</td>
+  	<td>Type<td>
+  	<td>Amount<td>
+  	<td>Description<td>
+  	<td>Mode<td>
+  	<td>Date<td>
+  </tr>
+  <tr>
+    <td>{{expense.id}}</td>
+    <td>{{expense.type}}</td>
+    <td>{{expense.amount}}</td>
+    <td>{{expense.description}}</td>
+    <td>{{expense.mode}}</td>
+    <td>{{expense.date}}</td>
    </tr>
  </table>
 

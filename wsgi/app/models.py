@@ -4,7 +4,7 @@ from hashlib import md5
 ROLE_USER = 0
 ROLE_ADMIN = 1
 
-class Owner(db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     nickname = db.Column(db.String(64), index = True, unique = True)
     email = db.Column(db.String(120), index = True, unique = True)
@@ -26,8 +26,11 @@ class Owner(db.Model):
     def avatar(self, size):
         return 'http://www.gravatar.com/avatar/' + md5(self.email).hexdigest() + '?d=mm&s=' + str(size)
 
+    def my_expenses(self):
+        return Expense.query.filter(Expense.owner_id == self.id)
+
     def __repr__(self):
-        return '<Owner %r>' % (self.nickname)
+        return '<User %r>' % (self.nickname)
 
 class Expense(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -37,8 +40,10 @@ class Expense(db.Model):
     amount = db.Column(db.String(10))
     date = db.Column(db.DateTime)
     mode = db.Column(db.String(120))
-    owner_id = db.Column(db.Integer, db.ForeignKey('owner.id'))
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return '<Expense %r>' % (self.description)
+
+
 

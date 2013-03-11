@@ -4,41 +4,52 @@ from flask.ext.login import login_user, logout_user, current_user
 from flask.ext.login import login_required
 from app import app, db, lm, oid
 from forms import LoginForm
-from models import Owner, ROLE_USER, ROLE_ADMIN
+from forms import PostExpense
+from datetime import datetime
+from models import User, ROLE_USER, ROLE_ADMIN, Expense
 
 
 @lm.user_loader
 def load_user(id):
-    return Owner.query.get(int(id))
+    return User.query.get(int(id))
 
 @app.before_request
 def before_request():
-    g.owner  = current_user
+    g.user  = current_user
 
-@app.route('/')
-@app.route('/home')
+@app.route('/', methods = ['GET', 'POST'])
+@app.route('/home', methods = ['GET', 'POST'])
 @login_required
 def home():
-    owner = g.owner
-    expenses = [
-            {
-                'owner': {'nickname': 'Nidhi' },
-                'expense' : 'Snack'
-                },
-            {
-                'owner' : {'nickname' : 'Vivek' },
-                'expense' : 'Parking'
-                }
-            ]
+    form = PostExpense()
+    if form.validate_on_submit():
+        exp = Expense(type = form.type.data, amount = form.amount.data, description = form.description.data, vendor = form.vendor.data, date = datetime.utcnow(), mode = form.mode.data, owner =g.user)
+        db.session.add(exp)
+        db.session.commit()
+        flash('Your expense is posted')
+        return redirect(url_for('home'))
+    user = g.user
+    expenses = g.user.my_expenses().all()
+    # #expenses = [
+    #         {
+    #             'owner': {'nickname': 'Nidhi' },
+    #             'expense' : 'Snack'
+    #             },
+    #         {
+    #             'owner' : {'nickname' : 'Vivek' },
+    #             'expense' : 'Parking'
+    #             }
+    #         ]
     return render_template('home.html',
                 title = 'Home',
-                owner  = owner,
+                user  = user,
+                form = form,
                 expenses = expenses)
 
 @app.route('/login', methods = ['GET', 'POST'])
 @oid.loginhandler
 def login():
-    if g.owner is not None and g.owner.is_authenticated():
+    if g.user is not None and g.user.is_authenticated():
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
@@ -59,35 +70,36 @@ def after_login(resp):
     if resp.email is None or resp.email =="":
         flash('Invalid login, Please try again.')
         redirect(url_for('login'))
-    owner = Owner.query.filter_by(email = resp.email).first()
-    if owner is None:
+    user = User.query.filter_by(email = resp.email).first()
+    if user is None:
         nickname = resp.nickname
         if nickname is None or nickname =="":
             nickname = resp.email.split('@')[0]
-        owner = Owner(nickname = nickname, email = resp.email,
+        user = User(nickname = nickname, email = resp.email,
                 role = ROLE_USER)
-        db.session.add(owner)
+        db.session.add(user)
         db.session.commit()
     remember_me = False
     if 'remember_me' in session:
         remember_me = session['remember_me']
         session.pop('remember_me', None)
-    login_user(owner, remember = remember_me)
+    login_user(user, remember = remember_me)
     return redirect(request.args.get('next') or url_for('home'))
 
-@app.route('/owner/<nickname>')
+@app.route('/user/<nickname>')
 @login_required
-def owner(nickname):
-    owner = Owner.query.filter_by(nickname = nickname).first()
-    if owner == None:
-        flash('Owner' + nickname + ' not found.')
+def user(nickname):
+    user = User.query.filter_by(nickname = nickname).first()
+    if user == None:
+        flash('User ' + nickname + ' not found.')
         return redirect(url_for('home'))
-    expenses = [
-            {'owner' : owner, 'description' : 'Testing desc 1' },
-            {'owner' : owner, 'description' : 'Testing desc 2' }
-            ]
+    expenses = user.my_expenses().all()
+    # expenses = [
+    #         {'owner' : owner, 'description' : 'Testing desc 1' },
+    #         {'owner' : owner, 'description' : 'Testing desc 2' }
+    #         ]
     return render_template('owner.html',
-            owner = owner,
+            user = user,
             expenses = expenses)
 
 @app.errorhandler(404)

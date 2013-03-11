@@ -2,22 +2,24 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<table>
+<table class="table">
     <tr valign = "top">
-        <td><img src="{{owner.avatar(128)}}"></td>
-        <td><h1>Owner: {{owner.nickname}}!</h1></td>
+        <td><img src="{{user.avatar(128)}}"></td>
+        <td><h2>{{user.nickname}}- List of Expenses</h2></td>
     </tr>
 </table>
 <hr>
+
+<hr>
 {% for expense in expenses %}
     {% include 'expense.html' %}
-    <!--<table>
+    <!-- <<table>
     <tr valign = "top">
         <td><img src="{{expense.owner.avatar(50)}}"></td>
         <td><i>{{expense.owner.nickname}} here are your expense descriptions:
         </i><br>{{expense.description}}</td>
-    </tr>
-</table>-->
+    </tr> -->
+
 {% endfor %}
 {% endblock %}
 

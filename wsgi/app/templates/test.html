@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Hi, {{owner.nickname}}!</h1>
+{% from "_expformhelper.html" import render_field %}
+<form method="post" action ="/home">
+	<dl>
+		{{ render_field(form.type)}}
+		{{ render_field(form.amount)}}
+		{{ render_field(form.description)}}
+		{{ render_field(form.vendor)}}
+		{{ render_field(form.mode)}}
+	</dl>
+	<p><input type ="submit" value ="Post Expense"></p>
+{% for expense in expenses %}
+<div><p>{{expense.owner.nickname}} your expense amount: {{expense.amount}}
+</b></p></div>
+{% endfor %}
+{% endblock %}

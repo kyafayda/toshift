@@ -10,6 +10,5 @@ class PostExpense(Form):
     amount = TextField('amount', validators = [Required()])
     description = TextField('description')
     vendor = TextField('vendor', validators = [Required()])
-    date = TextField('date')
     mode = TextField('mode', validators = [Required()])
 
