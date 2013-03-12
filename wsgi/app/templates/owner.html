@@ -9,8 +9,14 @@
     </tr>
 </table>
 <hr>
-
-<hr>
+<table class="table table-striped">
+  <tr valign="top">
+    <td>Type</td>
+    <td>Amount</td>
+    <td>Description</td>
+    <td>Mode</td>
+    <td>Date</td>
+</tr>
 {% for expense in expenses %}
     {% include 'expense.html' %}
     <!-- <<table>
@@ -21,5 +27,6 @@
     </tr> -->
 
 {% endfor %}
+</table>
 {% endblock %}
 

@@ -1,16 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
-<h3>Hi, {{user.nickname}}!</h3>
+<!-- <h2>Hi, {{user.nickname}}!</h3>
 <p><b>Create a new expense entry</b></p>
+{% from "_expformhelper.html" import render_field %} -->
+<form  method="post" action ="" class="form-expense">
+	<h3>Hi, {{user.nickname}}!</h3>
+	<p>Create a new expense entry</p>
 {% from "_expformhelper.html" import render_field %}
-<form method="post" action ="" class="form-horizontal">
 	{{form.hidden_tag()}}
 	<dl>
-		{{ render_field(form.type, placeholder = "Type")}}
-		{{ render_field(form.amount, placeholder = "Amount")}}
-		{{ render_field(form.description, placeholder = "Description")}}
-		{{ render_field(form.vendor, placeholder = "Vendor")}}
-		{{ render_field(form.mode, placeholder = "Mode")}}
+		{{ render_field(form.type, placeholder = "Type", class="input-block-level")}}
+		{{ render_field(form.amount, placeholder = "Amount", class="input-block-level")}}
+		{{ render_field(form.description, placeholder = "Description", class="input-block-level")}}
+		{{ render_field(form.vendor, placeholder = "Vendor", class="input-block-level")}}
+		{{ render_field(form.mode, placeholder = "Mode", class="input-block-level")}}
 	</dl>
 	<p><input type ="submit" value ="Post Expense" class="btn btn-primary">
 	<a href="{{ url_for('user', nickname = g.user.nickname) }}" class ="btn btn-small">View Expenses</a></p>
