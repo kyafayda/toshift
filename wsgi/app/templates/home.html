@@ -4,18 +4,20 @@
 <p><b>Create a new expense entry</b></p>
 {% from "_expformhelper.html" import render_field %} -->
 <form  method="post" action ="" class="form-expense">
+	{% from "_expformhelper.html" import render_field %}
+	{{form.hidden_tag()}}
 	<h3>Hi, {{user.nickname}}!</h3>
 	<p>Create a new expense entry</p>
-{% from "_expformhelper.html" import render_field %}
-	{{form.hidden_tag()}}
-	<dl>
-		{{ render_field(form.type, placeholder = "Type", class="input-block-level")}}
-		{{ render_field(form.amount, placeholder = "Amount", class="input-block-level")}}
-		{{ render_field(form.description, placeholder = "Description", class="input-block-level")}}
-		{{ render_field(form.vendor, placeholder = "Vendor", class="input-block-level")}}
-		{{ render_field(form.mode, placeholder = "Mode", class="input-block-level")}}
-	</dl>
+	<div class = "controls">
+		<dl>
+			{{ render_field(form.type, placeholder = "Type", class="input-block-level")}}
+			{{ render_field(form.amount, placeholder = "Amount", class="input-block-level")}}
+			{{ render_field(form.description, placeholder = "Description", class="input-block-level")}}
+			{{ render_field(form.vendor, placeholder = "Vendor", class="input-block-level")}}
+			{{ render_field(form.mode, placeholder = "Mode", class="input-block-level")}}
+		</dl>
+	</div>
 	<p><input type ="submit" value ="Post Expense" class="btn btn-primary">
-	<a href="{{ url_for('user', nickname = g.user.nickname) }}" class ="btn btn-small">View Expenses</a></p>
+	<a href="{{ url_for('user', nickname = g.user.nickname) }}" class ="btn">View Expenses</a></p>
 
 {% endblock %}
